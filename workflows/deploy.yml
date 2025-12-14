@@ -1,0 +1,13 @@
+name: Deploy to Easypanel
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via Webhook
+        run: |
+          curl -X POST "http://72.61.129.249:3000/api/deploy/atendn8or-site/atendn8or-site"

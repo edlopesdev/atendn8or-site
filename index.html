@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Atend-N8or para WhatsApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Atend-N8or para WhatsApp - Robô de atendimento para pequenos negócios." />
+  <style>
+    :root {
+      --primary: #247ef3;
+      --primary-dark: #165bb5;
+      --background: #f3f5f7;
+      --card-bg: #ffffff;
+      --text-main: #1f2933;
+      --text-muted: #6b7280;
+      --accent-green: #059669;
+      --accent-yellow: #facc15;
+      --border-soft: #e5e7eb;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: radial-gradient(circle at top left, #e0f2fe 0, #f3f5f7 40%, #f9fafb 100%);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #16a34a, #22c55e, #facc15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1120;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 6px 14px rgba(22, 163, 74, 0.35);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      font-size: 18px;
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    .badge-hosting {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.04);
+      color: var(--text-muted);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .badge-hosting span {
+      color: #0b7285;
+      font-weight: 600;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-actions a {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 22px 22px 24px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.06);
+      color: #1d4ed8;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: 30px;
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+
+    .hero-title span.highlight {
+      background: linear-gradient(120deg, #15803d, #16a34a, #22c55e, #facc15);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      max-width: 520px;
+    }
+
+    .hero-bullets {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px 18px;
+      margin-bottom: 20px;
+    }
+
+    .hero-bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .hero-bullet-icon {
+      margin-top: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #15803d;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease-out;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #22c55e);
+      color: #f9fafb;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.45);
+    }
+
+    .btn-secondary {
+      background: #f9fafb;
+      color: var(--text-main);
+      border-color: var(--border-soft);
+    }
+
+    .btn-secondary:hover {
+      background: #edf2ff;
+      border-color: #c7d2fe;
+    }
+
+    .btn-primary span.icon,
+    .btn-secondary span.icon {
+      font-size: 15px;
+    }
+
+    .hero-note {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .highlight-text {
+      font-weight: 600;
+      color: #0f766e;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .list {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .list-bullet {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #0f172a;
+      flex-shrink: 0;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(5, 150, 105, 0.06);
+      color: #047857;
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      margin-bottom: 8px;
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .price-tag {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 4px;
+    }
+
+    .price-tag span {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0;
+      margin-left: 4px;
+    }
+
+    .price-line {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+      margin: 14px 0 12px;
+    }
+
+    .warning-list {
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      font-size: 12px;
+      color: #374151;
+    }
+
+    .warning-item {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .warning-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(234, 179, 8, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #ca8a04;
+      flex-shrink: 0;
+    }
+
+    footer {
+      padding: 18px 0 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="container">
+      <header>
+        <div class="brand">
+          <div class="brand-mark">N8</div>
+          <div class="brand-text">
+            <div class="brand-title">Atend-N8or</div>
+            <div class="brand-subtitle">Robô de atendimento para WhatsApp</div>
+          </div>
+        </div>
+        <div class="badge-hosting">
+          Rodando em infraestrutura própria na <span>VPS edlopes.cloud</span>
+        </div>
+      </header>
+
+      <main>
+        <section class="card">
+          <div class="hero-eyebrow">Robô de atendimento pensado para negócios pequenos</div>
+          <h1 class="hero-title">
+            Seu atendente virtual que não some do <span class="highlight">WhatsApp</span> e não perde conversa importante.
+          </h1>
+          <p class="hero-subtitle">
+            O Atend-N8or organiza o fluxo de mensagens do seu negócio, responde o básico automaticamente e libera você e sua equipe para focarem no que realmente dá resultado.
+          </p>
+
+          <div class="hero-bullets">
+            <div class="hero-bullet">
+              <div class="hero-bullet-icon">✓</div>
+              <div>Respostas automáticas para dúvidas frequentes, cardápio, horário, endereço e formas de pagamento.</div>
+            </div>
+            <div class="hero-bullet">
+              <div class="hero-bullet-icon">✓</div>
+              <div>Modo stand-by quando o cliente pede "falar com humano", para o atendente assumir sem confusão.</div>
+            </div>
+            <div class="hero-bullet">
+              <div class="hero-bullet-icon">✓</div>
+              <div>Funciona 24/7 em servidor dedicado, sem depender de celular carregando ou computador ligado.</div>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn-primary" href="https://kiwify.app/SDOceXQ" target="_blank" rel="noopener noreferrer">
+              <span class="icon">📝</span>
+              <span>Preencher dados para contrato</span>
+            </a>
+            <a class="btn-secondary" href="https://pay.kiwify.com.br/h16tu1Q" target="_blank" rel="noopener noreferrer">
+              <span class="icon">⚡</span>
+              <span>Ir direto para pagamento</span>
+            </a>
+          </div>
+          <div class="hero-note">
+            Sem promessas milagrosas: o foco é <span class="highlight-text">organizar seu WhatsApp</span>, reduzir atraso de resposta e dar uma experiência mais profissional para o seu cliente.
+          </div>
+        </section>
+
+        <aside class="card">
+          <div class="pill">
+            <span class="pill-dot"></span>
+            Indicado para pequenos negócios
+          </div>
+          <h2 class="section-title">Para quem é o Atend-N8or</h2>
+          <p class="section-subtitle">Ideal para quem vive do WhatsApp no dia a dia:</p>
+          <ul class="list">
+            <li class="list-item">
+              <span class="list-bullet">•</span>
+              <span>Pizzarias, lanchonetes, restaurantes e padarias.</span>
+            </li>
+            <li class="list-item">
+              <span class="list-bullet">•</span>
+              <span>Dentistas, clínicas pequenas, esteticistas e consultórios.</span>
+            </li>
+            <li class="list-item">
+              <span class="list-bullet">•</span>
+              <span>Lojas de bairro, prestadores de serviço e autônomos.</span>
+            </li>
+          </ul>
+
+          <div class="divider"></div>
+
+          <h2 class="section-title">Como funciona na prática</h2>
+          <ul class="list">
+            <li class="list-item">
+              <span class="list-bullet">1</span>
+              <span><strong>Você preenche seus dados</strong> — pelo formulário seguro em poucos minutos, para gerar o contrato de prestação de serviço.</span>
+            </li>
+            <li class="list-item">
+              <span class="list-bullet">2</span>
+              <span><strong>O robô é configurado no seu número de WhatsApp</strong> — integração técnica via API, rodando na VPS edlopes.cloud.</span>
+            </li>
+            <li class="list-item">
+              <span class="list-bullet">3</span>
+              <span><strong>Mensagens principais ajustadas</strong> — boas-vindas, dúvidas frequentes, cardápio/serviços e repasse para atendente humano.</span>
+            </li>
+          </ul>
+
+          <div class="divider"></div>
+
+          <h2 class="section-title">Investimento e manutenção</h2>
+          <div class="price-tag">R$ 750,00<span>primeiro mês</span></div>
+          <p class="price-line">Configuração inicial + hospedagem + ajustes básicos para o seu negócio.</p>
+
+          <p class="price-line"><strong>Depois:</strong> R$ 120,00 / mês para manter o robô ativo, hospedado e monitorado.</p>
+
+          <div class="divider"></div>
+
+          <h3 class="section-title">Transparência e limites</h3>
+          <ul class="warning-list">
+            <li class="warning-item">
+              <span class="warning-icon">!</span>
+              <span>O robô não garante vendas por si só. Ele melhora organização e atendimento; resultado depende do seu negócio, oferta e equipe.</span>
+            </li>
+            <li class="warning-item">
+              <span class="warning-icon">!</span>
+              <span>Customizações avançadas ou fluxos muito específicos podem exigir projeto adicional, combinado caso a caso.</span>
+            </li>
+            <li class="warning-item">
+              <span class="warning-icon">!</span>
+              <span>Sempre que você quiser assumir a conversa manualmente, pode. O objetivo é ajudar o atendimento humano, não substituir.</span>
+            </li>
+          </ul>
+        </aside>
+      </main>
+
+      <footer>
+        Atend-N8or para WhatsApp · Serviço SaaS de automação de atendimento para pequenos negócios · Infraestrutura técnica em VPS própria (edlopes.cloud).
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

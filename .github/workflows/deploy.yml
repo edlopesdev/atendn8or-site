@@ -1,0 +1,23 @@
+name: Deploy to Easypanel
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Trigger Easypanel Deploy
+        run: |
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            "http://72.61.129.249:3000/trpc/project.deploy?batch=1" \
+            -d '{"0":{"json":{"name":"atendn8or-site","serviceNames":["atendn8or-site"]}}}'
+      
+      - name: Wait for deployment
+        run: sleep 30
+      
+      - name: Deploy complete
+        run: echo "Deploy triggered successfully!"

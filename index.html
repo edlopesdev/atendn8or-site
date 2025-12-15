@@ -390,6 +390,118 @@
       color: var(--text-muted);
       text-align: center;
     }
+    /* Promo floating block */
+    .promo-float {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: min(360px, calc(100% - 40px));
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,250,252,0.95));
+      border: 1px solid rgba(15,23,42,0.06);
+      box-shadow: 0 12px 30px rgba(15,23,42,0.12);
+      border-radius: 14px;
+      padding: 14px 14px 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      z-index: 9999;
+      backdrop-filter: blur(6px);
+      animation: promo-slide-up 380ms cubic-bezier(.22,.9,.31,1);
+      font-family: inherit;
+    }
+
+    .promo-float .promo-badge {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      background: linear-gradient(135deg,#16a34a,#22c55e,#facc15);
+      color: #071127;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 8px 18px rgba(37,99,235,0.08);
+    }
+
+    .promo-float .promo-content {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .promo-float .promo-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .promo-float .promo-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .promo-float .promo-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .promo-code {
+      background: rgba(15,23,42,0.04);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #0b1723;
+      font-size: 13px;
+    }
+
+    .promo-btn {
+      appearance: none;
+      border: 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .promo-btn.copy {
+      background: #f3f4f6;
+      color: var(--text-main);
+      border: 1px solid rgba(15,23,42,0.04);
+    }
+
+    .promo-btn.action {
+      background: linear-gradient(90deg,var(--primary),#22c55e);
+      color: #fff;
+    }
+
+    .promo-close {
+      background: transparent;
+      border: 0;
+      color: var(--text-muted);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 6px;
+      margin-left: 6px;
+    }
+
+    @keyframes promo-slide-up {
+      from { transform: translateY(18px) scale(.98); opacity: 0 }
+      to { transform: translateY(0) scale(1); opacity: 1 }
+    }
+
+    @media (max-width: 520px) {
+      .promo-float { right: 12px; left: 12px; bottom: 12px; width: auto; }
+      .promo-float .promo-badge { width: 48px; height: 48px }
+    }
   </style>
 </head>
 <body>
@@ -522,5 +634,72 @@
       </footer>
     </div>
   </div>
+  <!-- Bloco flutuante do cupom NATAL25 -->
+  <div id="promo-natal25" class="promo-float" role="dialog" aria-label="Cupom de desconto NATAL25" style="display:none">
+    <div class="promo-badge">25%</div>
+    <div class="promo-content">
+      <div class="promo-title">🎅🏼 Oferta especial de Natal 🎁</div>
+      <div class="promo-text">Use <strong>NATAL25</strong> 🎄 e ganhe 25% de desconto na instalação.</div>
+      <div class="promo-actions">
+        <div class="promo-code" id="promo-code">NATAL25</div>
+        <button class="promo-btn copy" id="promo-copy" aria-label="Copiar código">Copiar</button>
+        <a class="promo-btn action" id="promo-cta" href="https://pay.kiwify.com.br/h16tu1Q" target="_blank" rel="noopener noreferrer">Contratar com 25% OFF</a>
+      </div>
+    </div>
+    <button class="promo-close" id="promo-close" aria-label="Fechar">✕</button>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.getElementById('promo-natal25');
+      var key = 'promo_natal25_dismissed_ts';
+      var expireDays = 30;
+
+      function dismissed() {
+        try {
+          var raw = localStorage.getItem(key);
+          if (!raw) return false;
+          var ts = parseInt(raw, 10);
+          if (isNaN(ts)) return false;
+          var age = Date.now() - ts;
+          return age < expireDays * 24 * 60 * 60 * 1000;
+        } catch (e) { return false; }
+      }
+
+      function show() { root.style.display = 'flex'; }
+      function hide() { root.style.display = 'none'; }
+
+      if (!root) return;
+      if (dismissed()) return; // não mostrar se o usuário fechou recentemente
+
+      // mostrar com pequeno delay para não competir com carregamento
+      setTimeout(show, 700);
+
+      document.getElementById('promo-copy').addEventListener('click', function () {
+        var text = document.getElementById('promo-code').textContent.trim();
+        if (!text) return;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            var btn = document.getElementById('promo-copy');
+            var prev = btn.textContent;
+            btn.textContent = 'Copiado!';
+            setTimeout(function () { btn.textContent = prev; }, 1800);
+          });
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(ta);
+        }
+      });
+
+      document.getElementById('promo-close').addEventListener('click', function () {
+        try { localStorage.setItem(key, String(Date.now())); } catch (e) {}
+        hide();
+      });
+    }());
+  </script>
 </body>
 </html>

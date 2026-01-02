@@ -551,7 +551,7 @@
               <span class="icon">📝</span>
               <span>Preencher dados para contrato</span>
             </a>
-            <a class="btn-primary" href="https://pay.kiwify.com.br/h16tu1Q" target="_blank" rel="noopener noreferrer">
+            <a class="btn-primary" href="https://pay.kiwify.com.br/cbiu46R" target="_blank" rel="noopener noreferrer">
               <span class="icon">⚡</span>
               <span>Ir direto para pagamento</span>
             </a>
@@ -604,11 +604,22 @@
           <div class="divider"></div>
 
           <h2 class="section-title">Investimento e manutenção</h2>
-          <div class="price-tag">R$ 750,00<span>Instalação</span></div>
+
+          <div class="price-tag">
+            <span style="text-decoration: line-through; color: #b91c1c; font-size:18px; margin-right:8px;">R$ 750,00</span>
+            R$ 120,00<span>Instalação</span>
+          </div>
           <p class="price-line">Configuração inicial + hospedagem + ajustes básicos para o seu negócio.</p>
 
           <p class="price-line"><strong>Depois:</strong> R$ 120,00 / mês para manter o robô ativo, hospedado e monitorado.</p>
 
+
+          <div class="hero-actions" style="margin-top:18px;">
+            <a class="btn-primary" style="background: #25d366; color: #fff; border: none;" href="https://wa.me/5541987992415?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20Atendy%20para%20WhatsApp!" target="_blank" rel="noopener noreferrer">
+              <span class="icon">💬</span>
+              <span>Fale Conosco no WhatsApp</span>
+            </a>
+          </div>
           <div class="divider"></div>
 
           <h3 class="section-title">Transparência e limites</h3>
@@ -634,72 +645,6 @@
       </footer>
     </div>
   </div>
-  <!-- Bloco flutuante do cupom NATAL25 -->
-  <div id="promo-natal25" class="promo-float" role="dialog" aria-label="Cupom de desconto NATAL25" style="display:none">
-    <div class="promo-badge">25%</div>
-    <div class="promo-content">
-      <div class="promo-title">🎅🏼 Oferta especial de Natal 🎁</div>
-      <div class="promo-text">Use <strong>NATAL25</strong> 🎄 e ganhe 25% de desconto na instalação.</div>
-      <div class="promo-actions">
-        <div class="promo-code" id="promo-code">NATAL25</div>
-        <button class="promo-btn copy" id="promo-copy" aria-label="Copiar código">Copiar</button>
-        <a class="promo-btn action" id="promo-cta" href="https://pay.kiwify.com.br/h16tu1Q" target="_blank" rel="noopener noreferrer">Contratar com 25% OFF</a>
-      </div>
-    </div>
-    <button class="promo-close" id="promo-close" aria-label="Fechar">✕</button>
-  </div>
-
-  <script>
-    (function () {
-      var root = document.getElementById('promo-natal25');
-      var key = 'promo_natal25_dismissed_ts';
-      var expireDays = 30;
-
-      function dismissed() {
-        try {
-          var raw = localStorage.getItem(key);
-          if (!raw) return false;
-          var ts = parseInt(raw, 10);
-          if (isNaN(ts)) return false;
-          var age = Date.now() - ts;
-          return age < expireDays * 24 * 60 * 60 * 1000;
-        } catch (e) { return false; }
-      }
-
-      function show() { root.style.display = 'flex'; }
-      function hide() { root.style.display = 'none'; }
-
-      if (!root) return;
-      if (dismissed()) return; // não mostrar se o usuário fechou recentemente
-
-      // mostrar com pequeno delay para não competir com carregamento
-      setTimeout(show, 700);
-
-      document.getElementById('promo-copy').addEventListener('click', function () {
-        var text = document.getElementById('promo-code').textContent.trim();
-        if (!text) return;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(function () {
-            var btn = document.getElementById('promo-copy');
-            var prev = btn.textContent;
-            btn.textContent = 'Copiado!';
-            setTimeout(function () { btn.textContent = prev; }, 1800);
-          });
-        } else {
-          var ta = document.createElement('textarea');
-          ta.value = text;
-          document.body.appendChild(ta);
-          ta.select();
-          try { document.execCommand('copy'); } catch (e) {}
-          document.body.removeChild(ta);
-        }
-      });
-
-      document.getElementById('promo-close').addEventListener('click', function () {
-        try { localStorage.setItem(key, String(Date.now())); } catch (e) {}
-        hide();
-      });
-    }());
-  </script>
+  <!-- Balão de cupom de Natal removido -->
 </body>
 </html>
